@@ -1,0 +1,36 @@
+<html>  
+  <head>  
+    <title>File upload in Node.js by Javatpoint</title>  
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>  
+  <script>  
+  $(document).ready(function() {  
+     $('#uploadForm').submit(function() {  
+         $("#status").empty().text("File is uploading...");  
+  
+        $(this).ajaxSubmit({  
+  
+            error: function(xhr) {  
+                    status('Error: ' + xhr.status);  
+            },  
+  
+            success: function(response) {  
+                    console.log(response)  
+                    $("#status").empty().text(response);  
+            }  
+    });  
+  
+    return false;  
+    });      
+});  
+  </script>  
+  </head>  
+  <body>  
+      <h1>Express.js File Upload: by Javatpoint</h1>  
+      <form id="uploadForm" enctype="multipart/form-data" action="/uploadjavatpoint" method="post">  
+       <input type="file" name="myfile" /><br/><br/>  
+       <input type="submit" value="Upload Image" name="submit"><br/><br/>  
+       <span id="status"></span>  
+      </form>  
+  </body>  
+</html>  
