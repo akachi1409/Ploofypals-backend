@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "set PORT = 80 && node app.js",
     "server": "nodemon app.js",
     "client": "npm start --prefix front-end",
     "dev": "concurrently \"npm run server\" \"npm run client\""
