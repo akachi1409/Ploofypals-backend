@@ -12,6 +12,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "build": {
+    "win": {
+        "requestedExecutionLevel": "requireAdministrator"
+    }
+},
   "dependencies": {
     "@dropzone-ui/react": "github:dropzone-ui/react",
     "cors": "^2.8.5",
