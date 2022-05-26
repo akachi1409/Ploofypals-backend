@@ -7,7 +7,7 @@ const https = require("https");
 const fileUpload = require("express-fileupload");
 
 const app = express();
-const PORT = 443;
+const PORT = 80;
 
 // default options
 app.use(fileUpload());
@@ -78,22 +78,7 @@ app.post("/upload", function (req, res) {
   res.send("File uploaded!")
 });
 
-// app.listen(PORT, (error) => {
-//   if (!error) {
-//     console.log(
-//       "Server is Successfully Running, and App is listening on port " + PORT
-//     );
-    
-//   } else console.log("Error occurred, server can't start", error);
-// });
-
-https.createServer(
-  {
-    key: fs.readFileSync("server.key"),
-    cert: fs.readFileSync("server.cert"),
-  },
-  app
-).listen(PORT,(error) => {
+app.listen(PORT, (error) => {
   if (!error) {
     console.log(
       "Server is Successfully Running, and App is listening on port " + PORT
@@ -101,3 +86,18 @@ https.createServer(
     
   } else console.log("Error occurred, server can't start", error);
 });
+
+// https.createServer(
+//   {
+//     key: fs.readFileSync("server.key"),
+//     cert: fs.readFileSync("server.cert"),
+//   },
+//   app
+// ).listen(PORT,(error) => {
+//   if (!error) {
+//     console.log(
+//       "Server is Successfully Running, and App is listening on port " + PORT
+//     );
+    
+//   } else console.log("Error occurred, server can't start", error);
+// });
