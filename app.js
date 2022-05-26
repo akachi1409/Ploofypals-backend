@@ -1,6 +1,8 @@
 const express = require("express");
 const { spawn } = require("child_process");
 const fs = require("fs");
+const https = require("https");
+
 
 const fileUpload = require("express-fileupload");
 
@@ -77,6 +79,21 @@ app.post("/upload", function (req, res) {
 });
 
 app.listen(PORT, (error) => {
+  if (!error) {
+    console.log(
+      "Server is Successfully Running, and App is listening on port " + PORT
+    );
+    
+  } else console.log("Error occurred, server can't start", error);
+});
+
+https.createServer(
+  {
+    key: fs.readFileSync("server.key"),
+    cert: fs.readFileSync("server.cert"),
+  },
+  app
+).listen(PORT,(error) => {
   if (!error) {
     console.log(
       "Server is Successfully Running, and App is listening on port " + PORT
