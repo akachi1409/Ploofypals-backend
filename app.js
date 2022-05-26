@@ -1,6 +1,7 @@
 const express = require("express");
 const { spawn } = require("child_process");
 const fs = require("fs");
+const fse = require("fs-extra")
 const https = require("https");
 
 
@@ -12,7 +13,7 @@ const PORT = 80;
 // default options
 app.use(fileUpload());
 app.use("/trait", require("./routes/trait"));
-
+app.use("/result", express.static(path.join(__dirname, "public", "result")))
 app.get("/generate", function (req, res){
   try{
     console.log("------")
@@ -34,6 +35,14 @@ app.get("/generate", function (req, res){
     console.log(err);
     return res.status(500).send(err);
   }
+})
+
+app.get("/refresh", function (req, res){
+  const dir1 = "./result";
+
+  fse.emptyDir(dir11, err={
+
+  })
 })
 app.post("/upload", function (req, res) {
   const formData = req.files;
