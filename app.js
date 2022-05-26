@@ -5,7 +5,7 @@ const fs = require("fs");
 const fileUpload = require("express-fileupload");
 
 const app = express();
-const PORT = 80;
+const PORT = 443;
 
 // default options
 app.use(fileUpload());
