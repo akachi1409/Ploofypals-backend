@@ -3,6 +3,7 @@ from IPython.display import display
 import random
 import json
 import os
+from zipfile import ZipFile
 
 dirs = [
     "Armor",
@@ -16,7 +17,7 @@ dirs = [
     "Feet"
 ]
 
-TOTAL_IMAGES = 50
+TOTAL_IMAGES = 5
 all_images = [] 
 
 eyes = []
@@ -115,6 +116,15 @@ def all_images_unique(all_images):
     seen = list()
     return not any(i in seen or seen.append(i) for i in all_images)
 
+def make_zip():
+    zipObj = ZipFile('./result/result.zip', 'w')
+    directory = "./result"
+    for filename in os.listdir(directory):
+        f = os.path.join(directory, filename)
+        if (os.path.isfile(f)):
+            zipObj.write(f)
+    zipObj.close()
+    
 print("dirs:", dirs);
 for directory in dirs:
     with open("./uploads/" + directory+ "/data.json") as jsonFile:
@@ -212,78 +222,5 @@ for item in all_images:
     rgb_im = com8.convert('RGB')
     file_name = str(item["tokenId"]) + ".png"
     rgb_im.save("./result/" + file_name)
-'''    
-
-
-feet = ['blue', 'pink', 'purple']
-feet_weights = [33, 33, 33]
-
-hands = ['blue', 'pink', 'purple']
-hands_weights = [33, 33, 33]
-
-mouth = ['circle', 'diamond', 'square']
-mouth_weights = [33, 33, 33]
-
-panel = ['aqua', 'grey', 'salmon']
-panel_weights = [33, 33, 33]
-
-weapon = ['spear', 'split', 'sword']
-weapon_weights = [33, 33, 33]
-
-
-
-feet_files = {
-    'blue': 'Blue (Common)', 
-    'pink': 'Pink (Common)', 
-    'purple': 'Purple (Uncommon)', 
-}
-hands_files={
-    'blue':'Blue (Common)',
-    'pink':'Pink (Common)',
-    'purple':'Purple (Uncommon)'
-}
-
-mouth_files = {
-    'circle': 'Circle (Common)', 
-    'diamond': 'Diamond (Uncommon)', 
-    'square': 'Square (Common)', 
-}
-panel_files = {
-    'aqua':'Aqua Marine (Common)',
-    'grey':'Grey (Common)',
-    'salmon':'Salmon (Uncommon)'    
-}
-weapon_files = {
-    'spear': 'Spear (Common)', 
-    'split': 'Split Sword (Uncommon)', 
-    'sword': 'Sword (Common)', 
-}
-
-
-
-feet_count = {}
-for item in feet:
-    feet_count[item] = 0
     
-hands_count = {}
-for item in hands:
-    hands_count[item] = 0
-    
-helmet_count = {}
-for item in helmet:
-    helmet_count[item] = 0
-    
-mouth_count = {}
-for item in mouth:
-    mouth_count[item] = 0
-
-panel_count = {}
-for item in panel:
-    panel_count[item] = 0
-    
-weapon_count = {}
-for item in weapon:
-    weapon_count[item] = 0
-
-
-    '''
+make_zip()
