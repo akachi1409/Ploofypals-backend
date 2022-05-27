@@ -2,7 +2,6 @@ const express = require("express");
 const { spawn } = require("child_process");
 const fs = require("fs");
 const fse = require("fs-extra")
-const https = require("https");
 const path = require('path');
 
 const fileUpload = require("express-fileupload");
@@ -13,7 +12,19 @@ const PORT = 80;
 // default options
 app.use(fileUpload());
 app.use("/trait", require("./routes/trait"));
-app.use("/result", express.static(path.join(__dirname, "public", "result")))
+app.use("/result", express.static(path.join(__dirname, "result")))
+
+app.get("/images", function(req, res){
+  const dir = "./result";
+
+  fs.readdir(dir, function (err,files){
+    res.set('Access-Control-Allow-Origin', '*');
+    var length = 0;
+    if (files.length>0)
+      length = files.length - 1;
+    res.status(200).send("length:"+length)
+  })
+})
 app.get("/generate", function (req, res){
   try{
     console.log("------")
@@ -39,10 +50,21 @@ app.get("/generate", function (req, res){
 
 app.get("/refresh", function (req, res){
   const dir1 = "./result";
-
-  fse.emptyDir(dir11, err={
-
+  const dir2 = "./uploads";
+  fse.emptyDir(dir1, ( err )=> {
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
   })
+  fse.emptyDir(dir2, (err) => {
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
+  })
+  res.set('Access-Control-Allow-Origin', '*');
+  res.send("Refreshed all the data.");
 })
 app.post("/upload", function (req, res) {
   const formData = req.files;
