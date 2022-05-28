@@ -17,7 +17,7 @@ dirs = [
     "Feet"
 ]
 
-TOTAL_IMAGES = 5
+TOTAL_IMAGES = 50
 all_images = [] 
 
 eyes = []
@@ -122,7 +122,10 @@ def make_zip():
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
         if (os.path.isfile(f)):
-            zipObj.write(f)
+            if (filename != "result.zip"):
+                zipObj.write(f)
+            #print(filename)
+            #zipObj.write(f)
     zipObj.close()
     
 print("dirs:", dirs);
