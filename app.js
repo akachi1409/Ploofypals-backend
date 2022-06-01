@@ -12,10 +12,11 @@ const PORT = 80;
 // default options
 app.use(fileUpload());
 app.use("/trait", require("./routes/trait"));
-app.use("/result", express.static(path.join(__dirname, "result")))
+app.use("/result/rare", express.static(path.join(__dirname, "result/rare")))
+app.use("/result/normal", express.static(path.join(__dirname, "result/normal")))
 
-app.get("/images", function(req, res){
-  const dir = "./result";
+app.get("/images/normal", function(req, res){
+  const dir = "./result/normal";
 
   fs.readdir(dir, function (err,files){
     res.set('Access-Control-Allow-Origin', '*');
