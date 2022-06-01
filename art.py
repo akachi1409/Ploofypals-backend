@@ -1,11 +1,13 @@
-from PIL import Image 
+from PIL import Image, ImageSequence
 from IPython.display import display 
 import random
 import json
 import os
 from zipfile import ZipFile
 
+#fire_gif = Image.open(f'./uploads/Breed/Fire1.gif')
 dirs = [
+    "Background",
     "Armor",
     "Eyes",
     "Hands",
@@ -19,6 +21,10 @@ dirs = [
 
 TOTAL_IMAGES = 50
 all_images = [] 
+
+background = []
+background_weights = []
+background_files = {}
 
 eyes = []
 eyes_weights = []
@@ -72,6 +78,8 @@ def handle_data (item, item_weight, item_files, data):
 def read_json_data ( data ):
     print("data:", data)
     trait = data['trait']
+    if trait == "Background":
+        handle_data(background, background_weights, background_files, data)
     if trait == "Eyes":
         handle_data( eyes, eyes_weights, eyes_files, data);
     if trait == "Head":
@@ -95,6 +103,7 @@ def create_new_image():
     
     new_image = {} #
    
+    new_image ["background"] = random.choices(background, background_weights)[0]
     new_image ["armor"] = random.choices(armor, armor_weights)[0]
     #new_image ["bg"] = random.choices(bg, bg_weights)[0]
     #new_image ["breed"] = random.choices(breed, breed_weights)[0]
@@ -152,6 +161,10 @@ for item in all_images:
     item["tokenId"] = i
     i = i + 1
    
+background_count = {}
+for item in background:
+    background_count[item] = 0
+    
 armor_count = {}
 for item in armor:
     armor_count[item] = 0
@@ -189,6 +202,7 @@ for item in panel:
     panel_count[item] = 0
     
 for image in all_images:
+    background_count[image["background"]] += 1
     armor_count[image["armor"]] += 1
     eyes_count[image["eyes"]] += 1
     feet_count[image["feet"]] += 1
@@ -200,8 +214,9 @@ for image in all_images:
     weapon_count[image["weapon"]] += 1
     panel_count[image["panel"]] += 1
 
+frames = []
 for item in all_images:
-
+    im0 = Image.open(f'./uploads/Background/{background_files[item["background"]]}.png').convert('RGBA')
     im1 = Image.open(f'./uploads/Head/{head_files[item["head"]]}.png').convert('RGBA')
     im2 = Image.open(f'./uploads/Eyes/{eyes_files[item["eyes"]]}.png').convert('RGBA')
     im3 = Image.open(f'./uploads/Armor/{armor_files[item["armor"]]}.png').convert('RGBA')
@@ -212,8 +227,8 @@ for item in all_images:
     im8 = Image.open(f'./uploads/Feet/{feet_files[item["feet"]]}.png').convert('RGBA')
     im9 = Image.open(f'./uploads/Panel/{panel_files[item["panel"]]}.png').convert('RGBA')
     
-    #com10 = Image.alpha_composite(com9, im10)
-    com1 = Image.alpha_composite(im1, im2)
+    com0 = Image.alpha_composite(im0, im1)
+    com1 = Image.alpha_composite(com0, im2)
     com2 = Image.alpha_composite(com1, im3)
     com3 = Image.alpha_composite(com2, im4)
     com4 = Image.alpha_composite(com3, im5)
@@ -222,8 +237,19 @@ for item in all_images:
     com7 = Image.alpha_composite(com6, im9)
     com8 = Image.alpha_composite(com7, im8)
     
+    
+    
     rgb_im = com8.convert('RGB')
-    file_name = str(item["tokenId"]) + ".png"
+    file_name = str(item["tokenId"]) + ".gif"
     rgb_im.save("./result/" + file_name)
+    
+    #print("start gif processing------")
+    #for frame in ImageSequence.Iterator(fire_gif):
+    #    frame = frame.copy()
+    #    frame.paste(rgb_im, mask=com8)
+    #    frame = frame.convert("RGB")
+    #    frames.append(frame)
+    #print("end processing git----")
+    #frames[0].save("./result/" + file_name, save_all= True, append_images = frames[1:])
     
 make_zip()
