@@ -20,10 +20,10 @@ app.get("/images/normal", function(req, res){
 
   fs.readdir(dir, function (err,files){
     res.set('Access-Control-Allow-Origin', '*');
-    var length = 0;
-    if (files.length>0)
-      length = files.length - 1;
-    res.status(200).send("length:"+length)
+    // var length = 0;
+    // if (files.length>0)
+    //   length = files.length - 1;
+    res.status(200).send(files)
   })
 })
 app.get("/generate", function (req, res){
