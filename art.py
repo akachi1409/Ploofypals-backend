@@ -25,51 +25,62 @@ all_images = []
 background = []
 background_weights = []
 background_files = {}
+background_rarity = []
 
 eyes = []
 eyes_weights = []
 eyes_files = {}
+eyes_rarity = []
 
 head = []
 head_weights = []
 head_files = {}
+head_rarity = []
 
 armor = []
 armor_weights=[]
 armor_files = {}
+armor_rarity = []
 
 helmet = []
 helmet_weights = []
 helmet_files = {}
+helmet_rarity = []
 
 mouth = []
 mouth_weights = []
 mouth_files = {}
+mouth_rarity = []
 
 hands = []
 hands_weights = []
 hands_files = {}
+hands_rarity = []
 
 weapon = []
 weapon_weights = []
 weapon_files = {}
+weapon_rarity = []
 
 feet = []
 feet_weights = []
 feet_files = {}
+feet_rarity = []
 
 panel = []
 panel_weights = []
 panel_files = {}
+panel_rarity=[]
 
-def handle_data (item, item_weight, item_files, data):
+def handle_data (item, item_weight, item_files, item_rarity, data):
     index = 0;
     names = data['names']
     raritys = data['rarity']
-    
+    types = data['types'].split(",")
     for name in names.split(","):
         item.append(data['trait']+"_"+ str(index))
         item_files.setdefault(item[index], name.split(".")[0])
+        item_rarity.append(types[index])
         index = index + 1
     for rarity in raritys.split(","):
         item_weight.append( int(rarity) )
@@ -79,25 +90,25 @@ def read_json_data ( data ):
     print("data:", data)
     trait = data['trait']
     if trait == "Background":
-        handle_data(background, background_weights, background_files, data)
+        handle_data(background, background_weights, background_files, background_rarity, data)
     if trait == "Eyes":
-        handle_data( eyes, eyes_weights, eyes_files, data);
+        handle_data( eyes, eyes_weights, eyes_files, eyes_rarity, data);
     if trait == "Head":
-        handle_data( head, head_weights, head_files, data)
+        handle_data( head, head_weights, head_files, head_rarity, data)
     if trait == "Armor":
-        handle_data( armor, armor_weights, armor_files, data)
+        handle_data( armor, armor_weights, armor_files, armor_rarity, data)
     if trait == "Helmet":
-        handle_data( helmet, helmet_weights, helmet_files, data)
+        handle_data( helmet, helmet_weights, helmet_files, helmet_rarity, data)
     if trait == "Mouth":
-        handle_data(mouth, mouth_weights, mouth_files, data)
+        handle_data(mouth, mouth_weights, mouth_files, mouth_rarity, data)
     if trait == "Hands":
-        handle_data(hands, hands_weights, hands_files, data)
+        handle_data(hands, hands_weights, hands_files, hands_rarity, data)
     if trait == "Weapon":
-        handle_data(weapon, weapon_weights, weapon_files, data)
+        handle_data(weapon, weapon_weights, weapon_files, weapon_rarity, data)
     if trait == "Feet":
-        handle_data(feet, feet_weights, feet_files, data)
+        handle_data(feet, feet_weights, feet_files, feet_rarity, data)
     if trait == "Panel":
-        handle_data(panel, panel_weights, panel_files, data)
+        handle_data(panel, panel_weights, panel_files, panel_rarity, data)
 
 def create_new_image():
     
@@ -125,9 +136,9 @@ def all_images_unique(all_images):
     seen = list()
     return not any(i in seen or seen.append(i) for i in all_images)
 
-def make_zip():
-    zipObj = ZipFile('./result/result.zip', 'w')
-    directory = "./result"
+def make_zip(dir1):
+    zipObj = ZipFile('./result/' + dir1 + '/result.zip', 'w')
+    directory = "./result/"+ dir1
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
         if (os.path.isfile(f)):
@@ -215,17 +226,50 @@ for image in all_images:
     panel_count[image["panel"]] += 1
 
 frames = []
+
+def check_rarity(index, item_rarity):
+    index = int(index)
+    type1 = item_rarity[index]
+    if int(type1) == 1:
+        return 0
+    else :
+        return 1
+    
 for item in all_images:
+    common = 0
     im0 = Image.open(f'./uploads/Background/{background_files[item["background"]]}.png').convert('RGBA')
+    background_index = item["background"].split("_")[1]
     im1 = Image.open(f'./uploads/Head/{head_files[item["head"]]}.png').convert('RGBA')
+    head_index = item["head"].split("_")[1]
     im2 = Image.open(f'./uploads/Eyes/{eyes_files[item["eyes"]]}.png').convert('RGBA')
+    eyes_index = item["eyes"].split("_")[1]
     im3 = Image.open(f'./uploads/Armor/{armor_files[item["armor"]]}.png').convert('RGBA')
+    armor_index = item["armor"].split("_")[1]
     im4 = Image.open(f'./uploads/Helmet/{helmet_files[item["helmet"]]}.png').convert('RGBA')
+    helmet_index = item["helmet"].split("_")[1]
     im5 = Image.open(f'./uploads/Mouth/{mouth_files[item["mouth"]]}.png').convert('RGBA')
+    mouth_index = item["mouth"].split("_")[1]
     im6 = Image.open(f'./uploads/Hands/{hands_files[item["hands"]]}.png').convert('RGBA')
+    hands_index = item["hands"].split("_")[1]
     im7 = Image.open(f'./uploads/Weapon/{weapon_files[item["weapon"]]}.png').convert('RGBA')
+    weapon_index = item["weapon"].split("_")[1]
     im8 = Image.open(f'./uploads/Feet/{feet_files[item["feet"]]}.png').convert('RGBA')
+    feet_index = item["feet"].split("_")[1]
     im9 = Image.open(f'./uploads/Panel/{panel_files[item["panel"]]}.png').convert('RGBA')
+    panel_index = item["panel"].split("_")[1]
+    
+    common += check_rarity(background_index, background_rarity)
+    common += check_rarity(head_index, head_rarity)
+    common += check_rarity(eyes_index, eyes_rarity)
+    common += check_rarity(armor_index, armor_rarity)
+    common += check_rarity(helmet_index, helmet_rarity)
+    common += check_rarity(mouth_index, mouth_rarity)
+    common += check_rarity(hands_index, hands_rarity)
+    common += check_rarity(weapon_index, weapon_rarity)
+    common += check_rarity(feet_index, feet_rarity)
+    common += check_rarity(panel_index, panel_rarity)
+    print("---", common)
+    
     
     com0 = Image.alpha_composite(im0, im1)
     com1 = Image.alpha_composite(com0, im2)
@@ -241,7 +285,13 @@ for item in all_images:
     
     rgb_im = com8.convert('RGB')
     file_name = str(item["tokenId"]) + ".png"
-    rgb_im.save("./result/" + file_name)
+    if common >=9 :
+        rgb_im.save("./result/legendary/" + file_name)
+    if common > 2 and common <9:
+        rgb_im.save("./result/rare/" + file_name)
+    if common <=2:
+        rgb_im.save("./result/normal/" + file_name)
+    #rgb_im.save("./result/" + file_name)
     
     #print("start gif processing------")
     #for frame in ImageSequence.Iterator(fire_gif):
@@ -252,4 +302,6 @@ for item in all_images:
     #print("end processing git----")
     #frames[0].save("./result/" + file_name, save_all= True, append_images = frames[1:])
     
-make_zip()
+make_zip("legendary")
+make_zip("rare")
+make_zip("normal")

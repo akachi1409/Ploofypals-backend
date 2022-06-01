@@ -49,8 +49,10 @@ app.get("/generate", function (req, res){
 })
 
 app.get("/refresh", function (req, res){
-  const dir1 = "./result";
+  const dir1 = "./result/legendary";
   const dir2 = "./uploads";
+  const dir3 = "./result/rare";
+  const dir4 = "./result/normal"
   fse.emptyDir(dir1, ( err )=> {
     if (err){
       console.log("err:",err);
@@ -58,6 +60,18 @@ app.get("/refresh", function (req, res){
     }
   })
   fse.emptyDir(dir2, (err) => {
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
+  })
+  fse.emptyDir(dir3, (err) => {
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
+  })
+  fse.emptyDir(dir4, (err) => {
     if (err){
       console.log("err:",err);
       return res.status(500).send(err);
