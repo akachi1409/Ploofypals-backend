@@ -17,12 +17,36 @@ app.use("/result/normal", express.static(path.join(__dirname, "result/normal")))
 
 app.get("/images/normal", function(req, res){
   const dir = "./result/normal";
-
   fs.readdir(dir, function (err,files){
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
     res.set('Access-Control-Allow-Origin', '*');
-    // var length = 0;
-    // if (files.length>0)
-    //   length = files.length - 1;
+    res.status(200).send(files)
+  })
+})
+
+app.get("/images/rare", function(req, res){
+  const dir = "./result/rare";
+  fs.readdir(dir, function (err,files){
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
+    res.set('Access-Control-Allow-Origin', '*');
+    res.status(200).send(files)
+  })
+})
+
+app.get("/images/legendary", function(req, res){
+  const dir = "./result/legendary";
+  fs.readdir(dir, function (err,files){
+    if (err){
+      console.log("err:",err);
+      return res.status(500).send(err);
+    }
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).send(files)
   })
 })
