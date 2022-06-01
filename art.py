@@ -240,7 +240,7 @@ for item in all_images:
     
     
     rgb_im = com8.convert('RGB')
-    file_name = str(item["tokenId"]) + ".gif"
+    file_name = str(item["tokenId"]) + ".png"
     rgb_im.save("./result/" + file_name)
     
     #print("start gif processing------")
