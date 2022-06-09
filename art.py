@@ -225,7 +225,7 @@ for image in all_images:
     weapon_count[image["weapon"]] += 1
     panel_count[image["panel"]] += 1
 
-frames = []
+
 
 def check_rarity(index, item_rarity):
     index = int(index)
@@ -287,6 +287,7 @@ for item in all_images:
     
     file_name = str(item["tokenId"]) + ".gif"
     if common >=9 :
+        frames = []
         width, height = fire_gif.size
         for num in range(fire_gif.n_frames):
             fire_gif.seek(num)
@@ -299,6 +300,7 @@ for item in all_images:
                            append_images = frames[1:]
                            )
     if common > 2 and common <9:
+        frames = []
         width, height = fire_gif.size
         for num in range(fire_gif.n_frames):
             fire_gif.seek(num)
