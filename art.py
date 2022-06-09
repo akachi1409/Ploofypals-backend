@@ -5,7 +5,7 @@ import json
 import os
 from zipfile import ZipFile
 
-#fire_gif = Image.open(f'./uploads/Breed/Fire1.gif')
+fire_gif = Image.open(f'./uploads/Breed/Fire1.gif')
 dirs = [
     "Background",
     "Armor",
@@ -272,7 +272,7 @@ for item in all_images:
     
     
     com0 = Image.alpha_composite(im0, im1)
-    com1 = Image.alpha_composite(com0, im2)
+    com1 = Image.alpha_composite(im1, im2)
     com2 = Image.alpha_composite(com1, im3)
     com3 = Image.alpha_composite(com2, im4)
     com4 = Image.alpha_composite(com3, im5)
@@ -284,24 +284,49 @@ for item in all_images:
     
     
     rgb_im = com8.convert('RGB')
-    file_name = str(item["tokenId"]) + ".png"
+    
+    file_name = str(item["tokenId"]) + ".gif"
     if common >=9 :
-        rgb_im.save("./result/legendary/" + file_name)
+        width, height = fire_gif.size
+        for num in range(fire_gif.n_frames):
+            fire_gif.seek(num)
+            layer = Image.new("RGBA", (width, height), (0, 0 , 0 , 0))
+            layer.paste(fire_gif, (0, 0))
+            layer.paste(com8, (0, 0) , mask = com8)
+            frames.append(layer)
+            frames[0].save("./result/legendary/" + file_name, 
+                           save_all= True,
+                           append_images = frames[1:]
+                           )
     if common > 2 and common <9:
-        rgb_im.save("./result/rare/" + file_name)
+        width, height = fire_gif.size
+        for num in range(fire_gif.n_frames):
+            fire_gif.seek(num)
+            layer = Image.new("RGBA", (width, height), (0, 0 , 0 , 0))
+            layer.paste(fire_gif, (0, 0))
+            layer.paste(com8, (0, 0) , mask = com8)
+            frames.append(layer)
+            frames[0].save("./result/rare/" + file_name, 
+                           save_all= True,
+                           append_images = frames[1:]
+                           )
     if common <=2:
         rgb_im.save("./result/normal/" + file_name)
     #rgb_im.save("./result/" + file_name)
+    #com8.save("./result" + file_name)
+    #"""frames = []
     
-    #print("start gif processing------")
-    #for frame in ImageSequence.Iterator(fire_gif):
-    #    frame = frame.copy()
-    #    frame.paste(rgb_im, mask=com8)
-    #    frame = frame.convert("RGB")
-    #    frames.append(frame)
-    #print("end processing git----")
-    #frames[0].save("./result/" + file_name, save_all= True, append_images = frames[1:])
-    
-make_zip("legendary")
-make_zip("rare")
-make_zip("normal")
+    #"""
+    """
+    print("start gif processing------")
+    for frame in ImageSequence.Iterator(fire_gif):
+        frame = frame.copy()
+        frame.paste(com2, mask=com2)
+        frame = frame.convert("RGB")
+        frames.append(frame)
+    print("end processing git----")
+    frames[0].save("./result/" + file_name, save_all= True, append_images = frames[1:])
+    """
+#make_zip("legendary")
+#make_zip("rare")
+#make_zip("normal")
