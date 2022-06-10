@@ -286,10 +286,11 @@ for item in all_images:
     rgb_im = com8.convert('RGB')
     
     file_name = str(item["tokenId"]) + ".gif"
+    
     if common >=9 :
         frames = []
         width, height = fire_gif.size
-        for num in range(fire_gif.n_frames):
+        for num in range(0, fire_gif.n_frames, 5):
             fire_gif.seek(num)
             layer = Image.new("RGBA", (width, height), (0, 0 , 0 , 0))
             layer.paste(fire_gif, (0, 0))
@@ -297,12 +298,13 @@ for item in all_images:
             frames.append(layer)
             frames[0].save("./result/legendary/" + file_name, 
                            save_all= True,
-                           append_images = frames[1:]
+                           append_images = frames[1:],
+                           loop = 0
                            )
     if common > 2 and common <9:
         frames = []
         width, height = fire_gif.size
-        for num in range(fire_gif.n_frames):
+        for num in range(0, fire_gif.n_frames, 5):
             fire_gif.seek(num)
             layer = Image.new("RGBA", (width, height), (0, 0 , 0 , 0))
             layer.paste(fire_gif, (0, 0))
@@ -310,25 +312,38 @@ for item in all_images:
             frames.append(layer)
             frames[0].save("./result/rare/" + file_name, 
                            save_all= True,
-                           append_images = frames[1:]
+                           append_images = frames[1:],
+                           loop = 0
                            )
     if common <=2:
         rgb_im.save("./result/normal/" + file_name)
+    
     #rgb_im.save("./result/" + file_name)
     #com8.save("./result" + file_name)
     #"""frames = []
     
-    #"""
     """
+    frames = []
     print("start gif processing------")
     for frame in ImageSequence.Iterator(fire_gif):
-        frame = frame.copy()
-        frame.paste(com2, mask=com2)
-        frame = frame.convert("RGB")
-        frames.append(frame)
+        output = im1.copy()
+        frame_px = frame.load()
+        output_px = output.load()
+        transparent_foreground = frame.convert("RGBA")
+        transparent_foreground_px = transparent_foreground.load()
+        for x in range(frame.width):
+            for y in range(frame.height):
+                if frame_px[x,y] in (frame.info["background"], frame.info("transparency")):
+                    continue
+                output_px = transparent_foreground_px[x,y]
+                #if frame_px[x, y] in ( frame.info)
+        #frame = frame.copy()
+        #frame.paste(im1, mask=im1)
+        #frame = frame.convert("RGB")
+        frames.append(output)
     print("end processing git----")
     frames[0].save("./result/" + file_name, save_all= True, append_images = frames[1:])
     """
-#make_zip("legendary")
-#make_zip("rare")
-#make_zip("normal")
+make_zip("legendary")
+make_zip("rare")
+make_zip("normal")
