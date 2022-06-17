@@ -269,25 +269,21 @@ for item in all_images:
     common += check_rarity(feet_index, feet_rarity)
     common += check_rarity(panel_index, panel_rarity)
     print("---", common)
-    
-    
-    com0 = Image.alpha_composite(im0, im1)
-    com1 = Image.alpha_composite(im1, im2)
-    com2 = Image.alpha_composite(com1, im3)
-    com3 = Image.alpha_composite(com2, im4)
-    com4 = Image.alpha_composite(com3, im5)
-    com5 = Image.alpha_composite(com4, im6)
-    com6 = Image.alpha_composite(com5, im7)
-    com7 = Image.alpha_composite(com6, im9)
-    com8 = Image.alpha_composite(com7, im8)
+  
     
     
     
-    rgb_im = com8.convert('RGB')
-    
-    file_name = str(item["tokenId"]) + ".gif"
     
     if common >=9 :
+        com1 = Image.alpha_composite(im1, im2)
+        com2 = Image.alpha_composite(com1, im3)
+        com3 = Image.alpha_composite(com2, im4)
+        com4 = Image.alpha_composite(com3, im5)
+        com5 = Image.alpha_composite(com4, im6)
+        com6 = Image.alpha_composite(com5, im7)
+        com7 = Image.alpha_composite(com6, im9)
+        com8 = Image.alpha_composite(com7, im8)
+        file_name = str(item["tokenId"]) + ".gif"
         frames = []
         width, height = fire_gif.size
         for num in range(0, fire_gif.n_frames, 5):
@@ -302,6 +298,15 @@ for item in all_images:
                            loop = 0
                            )
     if common > 2 and common <9:
+        com1 = Image.alpha_composite(im1, im2)
+        com2 = Image.alpha_composite(com1, im3)
+        com3 = Image.alpha_composite(com2, im4)
+        com4 = Image.alpha_composite(com3, im5)
+        com5 = Image.alpha_composite(com4, im6)
+        com6 = Image.alpha_composite(com5, im7)
+        com7 = Image.alpha_composite(com6, im9)
+        com8 = Image.alpha_composite(com7, im8)
+        file_name = str(item["tokenId"]) + ".gif"
         frames = []
         width, height = fire_gif.size
         for num in range(0, fire_gif.n_frames, 5):
@@ -316,6 +321,17 @@ for item in all_images:
                            loop = 0
                            )
     if common <=2:
+        com0 = Image.alpha_composite(im0, im1)
+        com1 = Image.alpha_composite(com0, im2)
+        com2 = Image.alpha_composite(com1, im3)
+        com3 = Image.alpha_composite(com2, im4)
+        com4 = Image.alpha_composite(com3, im5)
+        com5 = Image.alpha_composite(com4, im6)
+        com6 = Image.alpha_composite(com5, im7)
+        com7 = Image.alpha_composite(com6, im9)
+        com8 = Image.alpha_composite(com7, im8)
+        file_name = str(item["tokenId"]) + ".png"
+        rgb_im = com8.convert('RGB')
         rgb_im.save("./result/normal/" + file_name)
     
     #rgb_im.save("./result/" + file_name)
