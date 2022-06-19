@@ -16,7 +16,8 @@ dirs = [
     "Mouth",
     "Panel",
     "Weapon",
-    "Feet"
+    "Feet",
+    "Breed"
 ]
 
 TOTAL_IMAGES = 50
