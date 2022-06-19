@@ -5,7 +5,7 @@ import json
 import os
 from zipfile import ZipFile
 
-fire_gif = Image.open(f'./uploads/Breed/Fire1.gif')
+#fire_gif = Image.open(f'./uploads/Breed/Fire1.gif')
 dirs = [
     "Background",
     "Armor",
@@ -26,6 +26,11 @@ background = []
 background_weights = []
 background_files = {}
 background_rarity = []
+
+fires = []
+fires_weights = []
+fires_files = {}
+fires_rarity = []
 
 eyes = []
 eyes_weights = []
@@ -109,6 +114,8 @@ def read_json_data ( data ):
         handle_data(feet, feet_weights, feet_files, feet_rarity, data)
     if trait == "Panel":
         handle_data(panel, panel_weights, panel_files, panel_rarity, data)
+    if trait == "Fire":
+        handle_data(fires, fires_weights, fires_files, fires_rarity, data)
 
 def create_new_image():
     
@@ -126,6 +133,7 @@ def create_new_image():
     new_image ["mouth"] = random.choices(mouth, mouth_weights)[0]
     new_image ["panel"] = random.choices(panel, panel_weights)[0]
     new_image ["weapon"] = random.choices(weapon, weapon_weights)[0]
+    new_image ["fires"] = random.choices(fires, fires_weights)[0]
 
     if new_image in all_images:
         return create_new_image()
@@ -175,6 +183,10 @@ for item in all_images:
 background_count = {}
 for item in background:
     background_count[item] = 0
+
+fires_count = {}
+for item in fires:
+    fires_count[item] = 0
     
 armor_count = {}
 for item in armor:
@@ -214,6 +226,7 @@ for item in panel:
     
 for image in all_images:
     background_count[image["background"]] += 1
+    fires_count[image["fires"]] += 1
     armor_count[image["armor"]] += 1
     eyes_count[image["eyes"]] += 1
     feet_count[image["feet"]] += 1
@@ -239,6 +252,8 @@ for item in all_images:
     common = 0
     im0 = Image.open(f'./uploads/Background/{background_files[item["background"]]}.png').convert('RGBA')
     background_index = item["background"].split("_")[1]
+    fire_gif = Image.open(f'./uploads/Breed/{fires_files[item["fires"]]}.gif')
+    #fire_index = item["fires"].split("_")[1]
     im1 = Image.open(f'./uploads/Head/{head_files[item["head"]]}.png').convert('RGBA')
     head_index = item["head"].split("_")[1]
     im2 = Image.open(f'./uploads/Eyes/{eyes_files[item["eyes"]]}.png').convert('RGBA')
@@ -259,6 +274,7 @@ for item in all_images:
     panel_index = item["panel"].split("_")[1]
     
     common += check_rarity(background_index, background_rarity)
+    
     common += check_rarity(head_index, head_rarity)
     common += check_rarity(eyes_index, eyes_rarity)
     common += check_rarity(armor_index, armor_rarity)
