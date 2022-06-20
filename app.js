@@ -14,7 +14,7 @@ app.use(fileUpload());
 app.use("/trait", require("./routes/trait"));
 app.use("/result/rare", express.static(path.join(__dirname, "result/rare")))
 app.use("/result/normal", express.static(path.join(__dirname, "result/normal")))
-app.use("/result/legendary", express.static(path.join(__dirname, "result/ledendary")))
+app.use("/result/legendary", express.static(path.join(__dirname, "result/legendary")))
 
 app.get("/images/normal", function(req, res){
   const dir = "./result/normal";
