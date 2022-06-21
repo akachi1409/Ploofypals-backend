@@ -20,7 +20,7 @@ dirs = [
     "Breed"
 ]
 
-TOTAL_IMAGES = 50
+TOTAL_IMAGES = 10000
 all_images = [] 
 
 background = []
