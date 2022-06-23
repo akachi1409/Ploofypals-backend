@@ -18,7 +18,6 @@
     }
   },
   "dependencies": {
-    "@dropzone-ui/react": "github:dropzone-ui/react",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-fileupload": "^1.3.1",
